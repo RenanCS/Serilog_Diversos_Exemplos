@@ -1,9 +1,9 @@
 ﻿using Log.Console.Models;
 using Log.Core;
+using Log.Core.Models;
 using Log.Data.CustomAdo;
 using Log.Data.Dapper;
 using System;
-using System.Configuration;
 using System.Data.SqlClient;
 
 namespace Log.Console
@@ -14,11 +14,11 @@ namespace Log.Console
         {
             var flogginDetail = GetLogDetail("starting application", null);
 
-            Log.Core.Log.WriteDiagnostic(flogginDetail);
+            LogDb.WriteDiagnostic(flogginDetail);
 
             var tracker = new PerfTracker("FloggerConsole_Execution", "", flogginDetail.UserName, flogginDetail.Location, flogginDetail.Product, flogginDetail.Layer);
 
-            var conection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
+            var conection = Environment.GetEnvironmentVariable("CONNECTION_SQLSERVER").ToString();
 
             LogExceptionConsole();
             LogExceptionADO(conection);
@@ -27,10 +27,10 @@ namespace Log.Console
 
 
             flogginDetail = GetLogDetail("use flogging console", null);
-            Log.Core.Log.WriteUsage(flogginDetail);
+            LogDb.WriteUsage(flogginDetail);
 
             flogginDetail = GetLogDetail("stopping app", null);
-            Log.Core.Log.WriteDiagnostic(flogginDetail);
+            LogDb.WriteDiagnostic(flogginDetail);
 
             tracker.Stop();
 
@@ -66,7 +66,7 @@ namespace Log.Console
                 catch (Exception ex)
                 {
                     var adoFloggingDetail = GetLogDetail("", ex);
-                    Log.Core.Log.WriteError(adoFloggingDetail);
+                    LogDb.WriteError(adoFloggingDetail);
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace Log.Console
                 catch (Exception ex)
                 {
                     var adoFloggingDetail = GetLogDetail("", ex);
-                    Log.Core.Log.WriteError(adoFloggingDetail);
+                    LogDb.WriteError(adoFloggingDetail);
                 }
             }
         }
@@ -118,7 +118,7 @@ namespace Log.Console
             catch (Exception ex)
             {
                 var entityFloggingDetail = GetLogDetail("", ex);
-                Log.Core.Log.WriteError(entityFloggingDetail);
+                LogDb.WriteError(entityFloggingDetail);
             }
 
         }
@@ -136,7 +136,7 @@ namespace Log.Console
             catch (Exception ex)
             {
                 flogginDetail = GetLogDetail("", ex);
-                Log.Core.Log.WriteError(flogginDetail);
+                LogDb.WriteError(flogginDetail);
             }
 
         }
