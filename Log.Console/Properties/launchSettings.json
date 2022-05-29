@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Log.Console": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "CONNECTION_SQLSERVER": ""
+      }
+    }
+  }
+}
